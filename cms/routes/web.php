@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AddCaseController;
+use App\Http\Controllers\ViewCaseListController;
+use App\Http\Controllers\ApproveCaseController;
+use App\Http\Controllers\LawController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +22,7 @@ use App\Http\Controllers\AddCaseController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('front');
 });
 
 Auth::routes();
@@ -30,4 +35,10 @@ Route::group(['middleware' => ['auth']], function () {
     // dasboard
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/add-case', [AddCaseController::class, 'index']);
+   
+    Route::post('/case-added', [AddCaseController::class, 'store'])->name('case.store');
+    Route::get('/view-case-list', [ViewCaseListController::class, 'index']);
+    Route::get('/approve-case', [ApproveCaseController::class, 'index']);
+    Route::get('/laws', [LawController::class, 'index']);
+    Route::post('/law-added', [LawController::class, 'store'])->name('law');
 });

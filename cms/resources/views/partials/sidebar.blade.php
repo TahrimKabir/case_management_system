@@ -45,29 +45,18 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
-                    {{-- <ul class="nav nav-treeview">
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../../index.html" class="nav-link">
+                            <a href="{{asset('/dashboard')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v1</p>
+                                <p>Dashboard </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="../../index2.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v2</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../../index3.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
-                            </a>
-                        </li>
-                    </ul> --}}
+                        
+                    </ul>
                 </li>
 
-                <li class="nav-item @if(Request::segment(1)=='dashboard') menu-open @endif">
+                <li class="nav-item  @if(Request::segment(1)=='add-case'||Request::segment(1)=='view-case-list') menu-open @endif">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -78,9 +67,16 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             
-                            <a  class="nav-link">
+                            <a  class="nav-link" href="{{asset('/add-case')}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Case Register</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            
+                            <a  class="nav-link"  href="{{asset('/view-case-list')}}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Case List</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -96,10 +92,10 @@
                                 <p>GR case</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a  class="nav-link">
+                        <li class="nav-item" >
+                            <a  class="nav-link" href="{{asset('/approve-case')}}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Non-GR case</p>
+                                <p>approve-case</p>
                             </a>
                         </li>
                         
