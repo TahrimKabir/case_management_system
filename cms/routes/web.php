@@ -35,10 +35,12 @@ Route::group(['middleware' => ['auth']], function () {
     // dasboard
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/add-case', [AddCaseController::class, 'index']);
-   
+    // Route::get('/get-value', [AddCaseController::class, 'getValue']);
+    Route::post('/get-value', 'AddCaseController@getValue');
     Route::post('/case-added', [AddCaseController::class, 'store'])->name('case.store');
     Route::get('/view-case-list', [ViewCaseListController::class, 'index']);
     Route::get('/approve-case', [ApproveCaseController::class, 'index']);
+    Route::post('/case-approved', [ApproveCaseController::class, 'approveCase'])->name('approveCase');
     Route::get('/laws', [LawController::class, 'index']);
     Route::post('/law-added', [LawController::class, 'store'])->name('law');
 });

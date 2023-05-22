@@ -63,7 +63,8 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="" class="d-block">Case Category:
-                                    <select name="" id="" class="select select2 form-control" style="width: 100%;"></select>
+                                    <select name="" id="" class="select select2 form-control"
+                                        style="width: 100%;"></select>
                                 </label>
                             </div>
                             <div class="col-md-3">
@@ -76,21 +77,83 @@
                     <div class="card-body table-responsive">
                         <table class="table table-bordered border-top">
                             <thead>
-                            <th>SL</th>
-                            <th>Date</th>
-                            <th>petition</th>
-                            <th>Accused</th>
-                            <th>Result</th>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Date</th>
+                                    <th>Case No</th>
+                                    <th>Parties</th>
+                                    <th>Section</th>
+                                    <th>Next Date</th>
+                                    <th>For What to come</th>
+                                    <th>Result</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                @php $i=1; @endphp
+                                @foreach ($allCase as $c)
+                                <tr>
+                                    {{-- <td>01</td> --}}
+                                    <td>{{ $c->id }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($c->created_at)) }}</td>
+                                    <td>@if($c->approvedCase!=NULL){{$c->approvedCase->id}}/{{date("m/Y",strtotime($c->approvedCase->created_at))}} @endif</td>
+                                    {{-- <td>
+                                        @if (!is_null($c->petition))
+                                            {{ $c->petition->petitionType }}
+                                        @endif
+                                    </td> --}}
+                                    <td class="text-center">
+                                        @if (!is_null($c->petition))
+                                            {{ $c->petition->petitioner }}
+                                        @endif
+                                        <p class='mb-0'> Vs </p>
+                                        @if (!is_null($c->criminal))
+                                            @php $i=1;  @endphp
+                                            @foreach ($c->criminal as $cc)
+                                            @if($i>1)
+                                        ,
+                                        @endif
+                                        {{ $cc->criminal }}
+                                                {{-- @if ($i == 1)
+                                                    {{ $cc->criminal }}
+                                                @else
+                                                    {{ $cc->criminal }},
+                                                @endif --}}
+                                                @php $i=$i+1; @endphp
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    @php $j = 1; @endphp
+                                    {{-- <td> @if (!is_null($c->petitionerFilledLaw))
+
+                                        @foreach($c->petitionerFilledLaw as $pl)
+                                        @if($j>1)
+                                        ,
+                                        @endif
+                                        {{ $pl->law->law_name }}-<b>{{ $pl->law->p_code }} Section </b>{{ $pl->law->section }}
+                                        
+                                        
+                                        @endforeach
+                                    @endif </td> --}}
+
+                                   
+
+                                    <td>
+                                        @if($c->approveCourtCase !=NULL)
+                                    @foreach($c->approveCourtCase as $ca)
+                                    @if($j>1) , @endif
+                                    {{$ca->law->law_name}}
+                                    @php $j = $j+1; @endphp
+                                    @endforeach
+                                    @endif
+                                    </td>
+                                    
+                                    
+                                </tr>
+                                    
+                                @endforeach
                             </tbody>
                         </table>
-                        
+
                     </div>
                 </div>
             </div>
@@ -116,7 +179,4 @@
 @section('script')
 @parent
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.js"></script> --}}
-
-
-
 @endsection

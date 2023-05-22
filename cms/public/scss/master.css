@@ -10,9 +10,15 @@
   display: flex;
   max-height: 100vh;
   height: 100%;
+  max-width: 800px;
+  width: 100%;
 }
 
 .modal-header {
   display: block;
+}
+
+.modal-content {
+  width: 100%;
 }
 /*# sourceMappingURL=master.css.map */

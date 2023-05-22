@@ -8,6 +8,7 @@ use App\Models\Criminal;
 use App\Models\Petitioner;
 use App\Models\Witness;
 use App\Models\Law;
+use App\Models\PetitionerFilledLaw;
 
 
 class AddCaseController extends Controller
@@ -18,6 +19,11 @@ class AddCaseController extends Controller
         ->get();
         $section = Law::all();
         return view('add-case',compact('law','section'));
+    }
+
+    public function getValue(Request $req){
+        $selectedValue = $req->input('selectedValue');
+        dd($selectedValue);
     }
     
     public function store(Request $req){
@@ -42,12 +48,17 @@ class AddCaseController extends Controller
      $cid = "1";
      $lawid=$req->section;
      
-     $data = array('casetype'=>$ctype,'court_id'=>$cid,'case_cat'=>$caseCat,'law_id'=>$lawid);
+     $data = array('casetype'=>$ctype,'court_id'=>$cid,'case_cat'=>$caseCat,'law_id'=>"");
      CaseR::create($data);
      $casn = CaseR::where('court_id',$cid)->orderBy('created_at', 'desc')->first();
      
     $pData = array('case_id'=>$casn->id,'petitioner'=>$req->petitioner,'fname'=>$vfname,'mname'=>$req->vmname,'petitionType'=>$req->pType,'address'=>$vaddress);
     Petitioner::create($pData);
+    for($n=0;$n<count($lawid);$n++){
+        $ldata = array('case_id'=>$casn->id,'law_id'=>$lawid[$n]);
+        PetitionerFilledLaw::create($ldata);
+
+    }
     for($i=0;$i<count($accused);$i++){
         for($j=0;$j<count($afname);$j++){
             for($k=0;$k<count($amname);$k++){

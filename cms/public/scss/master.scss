@@ -4,9 +4,16 @@
     display: flex;
     max-height: 100vh;
     height: 100%;
+    max-width: 800px;
+    width: 100%;
 }
 
 .modal-header {
     display: block;
     
+}
+
+.modal-content{
+//    max-width: 1500px;
+   width: 100%;
 }

@@ -10,4 +10,5 @@ class Petitioner extends Model
     use HasFactory;
     protected $table = "petitioner";
     protected $fillable = ['case_id','petitioner','fname','mname','address','petitionType'];
+    
 }

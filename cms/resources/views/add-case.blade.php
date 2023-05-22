@@ -57,14 +57,14 @@
                             @csrf
                             <div class="row my-4">
                                 <div class="col-12 bg-dark p-1 ">
-                                    <h4 class="text-center mb-0">Petitioner  Details</h4>
+                                    <h4 class="text-center mb-0">Petitioner Details</h4>
                                 </div>
                             </div>
                             <div class="row  ">
 
                                 <div class="col-12 ">
                                     <label for="aname" class="d-block ">
-                                        Petitioner  Name:
+                                        Petitioner Name:
                                         <input type="text" id="aname" name="petitioner" class="form-control">
                                     </label>
                                 </div>
@@ -178,14 +178,16 @@
                             </div>
                             <div class="row">
 
-                               
+
                                 <div class="col-md-6">
                                     <label for="law" class="d-block">
                                         Act under which the case is filed:
-                                        <select name="rule" id="law" class="select2 form-control"
-                                            style="width:100%;">
-                                            @foreach($law as $l)
-                                            <option data-state="{{$l->law_name}}"  value="{{$l->law_name}}">{{$l->law_name}} {{$l->section}}</option>
+                                        <select multiple="multiple" name="rule" id="law"
+                                            onchange="getSection(this)" class="select2 form-control" style="width:100%;">
+
+                                            @foreach ($law as $l)
+                                                <option data-state="{{ $l->law_name }}" value="{{ $l->law_name }}">
+                                                    {{ $l->law_name }} {{ $l->section }}</option>
                                             @endforeach
                                         </select>
                                     </label>
@@ -193,17 +195,17 @@
                                 <div class="col-md-6">
                                     <label for="section" class="d-block">
                                         Section under which the case has been filed:
-                                        <select name="section" id="section" class="select2 form-control"
+                                        <select id="targetDropdown" name="section[]" class="select2" multiple="multiple"
                                             style="width:100%;">
-                                            @foreach($section as $l)
-                                            <option data-state="{{$l->law_name}}"  value="{{$l->id}}">{{$l->section}}</option>
-                                            @endforeach
+
                                         </select>
 
-                                        
+
 
                                     </label>
                                 </div>
+
+
 
                             </div>
                             <div class="row">
@@ -330,6 +332,7 @@
 <script>
     function myFunction() {
         var x = document.getElementById("ctype").value;
+        console.log(x);
         if (x == 'gr') {
             document.getElementById("distance").innerHTML =
                 "<label class='d-block' for='dist'>Distance:<input type='text' class='form-control' name='dist'></label>";
@@ -345,11 +348,86 @@
 </script>
 <script>
     var $law = $('#law'),
-		$section = $('#section'),
-    $options = $section.find('option');
-    
-$law.on('change', function() {
-	$section.html($options.filter('[data-state="'+this.value+'"]'));
-}).trigger('change');
+        $section = $('#section'),
+        $options = $section.find('option');
+
+    $law.on('change', function() {
+        $section.html($options.filter('[data-state="' + this.value + '"]'));
+    }).trigger('change');
+</script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+{{-- <script>
+    $(document).ready(function() {
+        // Initialize Select2 dropdown
+        $('#law').select2();
+
+        // Attach event listener for change event
+        $('#law').on('change', function() {
+            var selectedValue = $(this).val();
+
+            // Send AJAX request to Laravel controller
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: '/get-value',
+                method: 'POST', // or 'GET', 'PUT', 'DELETE' depending on your needs
+
+                data: {
+
+                    selectedValue: selectedValue
+                },
+                success: function(response) {
+                    // Handle the successful response from the controller
+                    console.log(response);
+                    console.log(data);
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script> --}}
+{{-- dependent dropdown --}}
+<script>
+    function getSection(select) {
+        var selectedValues = [];
+
+        // Loop through the selected options
+        for (var i = 0; i < select.options.length; i++) {
+            var option = select.options[i];
+
+            // Check if the option is selected
+            if (option.selected) {
+                selectedValues.push(option.value);
+            }
+        }
+
+        // Pass the selectedValues to another function or perform any other actions
+        console.log(selectedValues);
+        // Clear the target dropdown
+        var targetDropdown = document.getElementById("targetDropdown");
+        targetDropdown.innerHTML = "";
+
+        // Add the selected values to the target dropdown
+        var section = @json($section);
+        for (var j = 0; j < section.length; j++) {
+            for (var i = 0; i < selectedValues.length; i++) {
+                if (section[j].law_name == selectedValues[i]) {
+                    var option = document.createElement("option");
+                    // option.value = selectedValues[i];
+                    // option.text = selectedValues[i];
+                    option.value = section[j].id;
+                    option.text = section[j].law_name + "Act" + section[j].p_code + ", Section" + section[j].section +
+                        ": " + section[j].desc;
+                    targetDropdown.appendChild(option);
+                }
+            }
+        }
+    }
 </script>
 @endsection
