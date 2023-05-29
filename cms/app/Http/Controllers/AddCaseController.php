@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\CaseR;
 use App\Models\Criminal;
@@ -9,7 +9,7 @@ use App\Models\Petitioner;
 use App\Models\Witness;
 use App\Models\Law;
 use App\Models\PetitionerFilledLaw;
-
+use App\Models\Jurisdriction;
 
 class AddCaseController extends Controller
 {
@@ -18,7 +18,14 @@ class AddCaseController extends Controller
         ->distinct()
         ->get();
         $section = Law::all();
-        return view('add-case',compact('law','section'));
+        if(Auth::user()->userInfo->court_id !=NULL){
+            $jurisdriction = Jurisdriction::where('court_id',Auth::user()->userInfo->court->id)->get();
+            return view('add-case',compact('law','section','jurisdriction'));
+        }else{
+            $jurisdriction = Jurisdriction::where('thana_id',Auth::user()->userInfo->IArea->id)->get();
+        return view('add-case',compact('law','section','jurisdriction'));
+        }
+        
     }
 
     public function getValue(Request $req){
@@ -45,10 +52,11 @@ class AddCaseController extends Controller
      $rule = $req->section;
      $caseCat = $req->caseCat;
      $caseCat="criminal";
-     $cid = "1";
+     $cid = Auth::user()->userInfo->court->id;
+    //  $jid = Auth::user()->userInfo->IArea->id;
      $lawid=$req->section;
-     
-     $data = array('casetype'=>$ctype,'court_id'=>$cid,'case_cat'=>$caseCat,'law_id'=>"");
+     $jr_id = $req->jurisdriction;
+     $data = array('casetype'=>$ctype,'court_id'=>$cid,'case_cat'=>$caseCat,'law_id'=>"","jurisdriction_id"=>$jr_id);
      CaseR::create($data);
      $casn = CaseR::where('court_id',$cid)->orderBy('created_at', 'desc')->first();
      

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+use App\Models\CourtCat;
+use App\Models\CaseType;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $courtCategory = CourtCat::all();
+        view()->share('courtCategory', $courtCategory);
+
+        $caseType = CaseType::all();
+        view()->share('caseType', $caseType);
     }
 }

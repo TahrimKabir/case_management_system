@@ -137,7 +137,9 @@
                                         </td>
 
 
-                                        <td> <a href=""
+                                        <td class="d-flex justify-content-center align-items-center"> 
+                                            @if($c->under_investigation=='N' ||$c->under_investigation=='V' )
+                                            <a href=""
                                                 onclick="openModal('{{ $c->id }}','{{ $c->created_at }}')"
                                                 class="btn-sm btn-info" type="button" data-toggle="modal"
                                                 data-target="#myModal">
@@ -149,15 +151,24 @@
                                                         d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
                                                 </svg> Approve
                                             </a>
-                                            <a href="" class="btn-sm btn-info ml-1">
+                                           @if($c->under_investigation!='V')
+                                            <a href=""
+                                                onclick="openInvestigation('{{ $c->id }}','{{ $c->created_at }}')"
+                                                class="btn-sm btn-info ml-1"   type="button" data-toggle="modal"
+                                                data-target="#investigation">
+                                               
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
                                                     <path
                                                         d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                     <path
                                                         d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                </svg> Transfer to Approve
+                                                </svg>  investigation
                                             </a>
+                                            @endif
+                                            @else
+                                            <a href="" class="btn btn-sm btn-danger ml-1" readonly>sent for investigation</a>
+                                            @endif
 
 
                                             <!-- Modal -->
@@ -228,6 +239,85 @@
                                                 </div>
                                             </div>
                                             {{-- // --}}
+
+                                            <!-- Modal -->
+                                            <div id="investigation" class="modal fade" role="dialog">
+                                                <div class="modal-dialog ">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-dark">
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">Add Law</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('investigate') }}"
+                                                                
+                                                                method="post">
+                                                                @csrf
+                                                                <div class="row" style="display:none;">
+                                                                    <div class="col-md-6">
+                                                                        <label for="" class="d-block">Law Name:
+                                                                            <input type="text" name="caseregid"
+                                                                                id="inputId" class="form-control"></label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="" class="d-block">Section
+                                                                            <input type="number" name="section"
+                                                                                id="pcode" class="form-control"></label>
+                                                                    </div>
+
+
+                                                                </div>
+                                                                <div class="row">
+
+
+                                                                    
+                                                                    <div class="col-md-6">
+                                                                        <label for="section" class="d-block">
+                                                                            Section under which the case has been filed:
+                                                                            <select  name="sentto"
+                                                                                class="select2 form-control"
+                                                                                style="width:100%;">
+                                                                                @foreach($iareas as $i)
+                                                                                <option value="{{$i->id}}">{{$i->area_name}}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                           
+
+
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="section" class="d-block">
+                                                                           Date to get finished
+                                                                            <input type="date" name="enddate" id="" class="form-control">
+                                                                           
+
+
+                                                                        </label>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <button type="submit"
+                                                                            class="btn btn-sm btn-success">SAVE</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            {{-- // --}}
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -272,6 +362,15 @@
         $('#myModal').find('#pcode').val(date);
         // Open the modal or perform other operations
         $('#myModal').modal('show');
+
+        
+    }
+
+    function openInvestigation(itemId,date){
+        $('#investigation').find('#inputId').val(itemId);
+        $('#investigation').find('#pcode').val(date);
+        // Open the modal or perform other operations
+        $('#investigation').modal('show');
     }
 </script>
 

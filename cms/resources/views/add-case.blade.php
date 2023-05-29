@@ -55,12 +55,12 @@
                     <div class="card-body">
                         <form action="{{ route('case.store') }}" method="post">
                             @csrf
-                            <div class="row my-4">
+                            <div class="row my-4" id="p1">
                                 <div class="col-12 bg-dark p-1 ">
                                     <h4 class="text-center mb-0">Petitioner Details</h4>
                                 </div>
                             </div>
-                            <div class="row  ">
+                            <div class="row " id="p2">
 
                                 <div class="col-12 ">
                                     <label for="aname" class="d-block ">
@@ -239,6 +239,19 @@
                                     <p id="date" class="mb-0"></p>
 
                                 </div>
+
+                                <div class="col-md-4" id="jurisdriction">
+{{-- {{Auth::user()->userInfo->court->Court_number}} --}}
+                                    <label for="jurisdriction" class="d-block">jurisdriction
+                                        <select name="jurisdriction" id="" class="select2 form-control">
+                                            @foreach($jurisdriction as $jd)
+                                            <option value="{{$jd->id}}">@if($jd->IArea!=NULL) {{$jd->IArea->area_name}}@endif </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+
+                                </div>
+
                             </div>
 
 
@@ -334,13 +347,15 @@
         var x = document.getElementById("ctype").value;
         console.log(x);
         if (x == 'gr') {
+            document.getElementById("p1").style.display = 'none';
+            document.getElementById("p2").style.display = 'none';
             document.getElementById("distance").innerHTML =
                 "<label class='d-block' for='dist'>Distance:<input type='text' class='form-control' name='dist'></label>";
             document.getElementById("date").innerHTML =
                 "<label class='d-block' for='dist'>Distance:<input type='date' class='form-control' name='dist'></label>";
         } else {
-            document.getElementById("distance").innerHTML = "";
-            document.getElementById("date").innerHTML = "";
+            // document.getElementById("distance").innerHTML = "";
+            // document.getElementById("date").innerHTML = "";
         }
 
 
@@ -356,42 +371,7 @@
     }).trigger('change');
 </script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-{{-- <script>
-    $(document).ready(function() {
-        // Initialize Select2 dropdown
-        $('#law').select2();
 
-        // Attach event listener for change event
-        $('#law').on('change', function() {
-            var selectedValue = $(this).val();
-
-            // Send AJAX request to Laravel controller
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: '/get-value',
-                method: 'POST', // or 'GET', 'PUT', 'DELETE' depending on your needs
-
-                data: {
-
-                    selectedValue: selectedValue
-                },
-                success: function(response) {
-                    // Handle the successful response from the controller
-                    console.log(response);
-                    console.log(data);
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    console.error(error);
-                }
-            });
-        });
-    });
-</script> --}}
 {{-- dependent dropdown --}}
 <script>
     function getSection(select) {

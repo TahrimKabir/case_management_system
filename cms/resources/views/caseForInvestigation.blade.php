@@ -133,24 +133,55 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                <th>Law Name</th>
+                                
                                 <th>Section</th>
-                                <th>In Details</th>
+                              
+                                <th>Deadline</th>
                                 <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $i=0; @endphp
-                                @foreach($law as $l)
-                                <tr>
-                                <td>{{$i}}</td>
-                                <td>{{$l->law_name}}</td>
-                                <td>{{$l->section}}</td>
-                                <td>{{$l->desc}}</td>
-                                <td> <a href="" class="btn btn-sm btn-success">edit</a><a href="" class="btn btn-sm btn-danger ml-1">delete</a> </td>
-                                @php $i=$i+1; @endphp
-                                </tr>
-                                @endforeach
+                                @php $j=1; @endphp
+                               @foreach($case as $c)
+                               @if(AUth::user()->userInfo->court_id != null)
+                               <tr>
+                                <td>{{$j}} </td>
+                                <td> <a  href="{{ asset('case/' . $c->id) }}">{{$c->case_id}}</a> </td>
+                                <td>@if($c->petitionerFilledLaw!=NULL) 
+                                    @foreach($c->petitionerFilledLaw as $cp)
+                                     {{$cp->Law->law_name}},<i>Penal code-</i> {{$cp->Law->p_code}}, Section {{$cp->Law->section}}
+                                    @endforeach
+                                     @endif
+                                    </td>
+                                <td>@if($c->investigation!=NULL)
+                                    {{$c->investigation->case_id}}
+                                    @endif</td>
+                                <td>@if($c->investigation!=NULL)
+                                    {{date('Y-m-d',strtotime($c->investigation->enddate))}}
+                                    @endif</td>
+                                
+                                <td class="text-center">@if($c->petition!=NULL) 
+                                    {{$c->petition->petitioner}}
+                                     @endif
+                                     <p class="mb-0">Vs</p>
+                                     @if($c->criminal!=NULL)
+                                     @php $i=1; @endphp
+                                     @foreach($c->criminal as $cc)
+                                     @if($i>1) , @endif
+                                     {{$cc->criminal}}
+                                     @php $i=$i+1; @endphp
+                                     @endforeach
+                                     @endif
+                                    </td>
+
+                                    <td></td>
+                                     
+                               </tr>
+                               @php $j=$j+1; @endphp
+                               @else
+                               
+                               @endif
+                               @endforeach
                             </tbody>
                         </table>
                     </div>
