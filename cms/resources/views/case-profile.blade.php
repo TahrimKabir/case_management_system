@@ -69,9 +69,11 @@
             <div class="col-10">
                 <div class="card">
                     <div class="card-header">
+                        @if(Auth::user()->can('case-create'))
                         <h4 class="mb-0 text-center text-bold">({{ $case->id }})
                             @if ($case->approvedCase != null)
                                 {{ date('m/Y', strtotime($case->approvedCase->created_at)) }}
+                                @endif
                         </h4>
                         @endif
                         <h3 class="display-6 mb-0 text-center text-bold">
@@ -143,40 +145,42 @@
                     </div>
                 @endif
                 {{-- investigate --}}
-                @if($case->under_investigation !='V')
-                <div class="card">
-                    <div class="card-header">
-                       <form action="{{route('investigation')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="" class="d-block mb-0">
-                                    <input type="checkbox" name="isValid" value="Y" id="">
-                                    Is there any validity of the case?
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="" class="d-block">Necessary Documents
-                                    <input type="file" name="file[]" id="" class="form-control" multiple="multiple">
-                                </label>
-                                <input type="hidden" name="case_id" value="{{$id}}">
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-sm btn-info">save</button>
-                            </div>
-                           </div>
-                       </form>
-                        
+                @if ($case->under_investigation != 'V')
+                    <div class="card">
+                        <div class="card-header">
+                            <form action="{{ route('investigation') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="" class="d-block mb-0">
+                                            <input type="checkbox" name="isValid" value="Y" id="">
+                                            Is there any validity of the case?
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="" class="d-block">Necessary Documents
+                                            <input type="file" name="file[]" id="" class="form-control"
+                                                multiple="multiple">
+                                        </label>
+                                        <input type="hidden" name="case_id" value="{{ $id }}">
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-sm btn-info">save</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
-                </div>
-                @elseif($case->under_investigation =='V')
-               <div class="card">
-                <div class="card-body">
-                    <label for="iv" class="d-block" disabled>
-                        <input type="checkbox" name="" id="iv" value="" checked disabled> Case is valid.
-                    </label>
-                </div>
-               </div>
+                @elseif($case->under_investigation == 'V')
+                    <div class="card">
+                        <div class="card-body">
+                            <label for="iv" class="d-block" disabled>
+                                <input type="checkbox" name="" id="iv" value="" checked disabled> Case
+                                is valid.
+                            </label>
+                        </div>
+                    </div>
                 @endif
                 {{-- hearing date list --}}
                 <div class="card">
@@ -240,24 +244,27 @@
                                 @if ($case->criminal != null)
                                     @foreach ($case->criminal as $cc)
                                         @php $i=$i+1; @endphp
-                                        <form action="{{route('presence')}}" method="POST" id="form{{$i}}">
+                                        <form action="{{ route('presence') }}" method="POST"
+                                            id="form{{ $i }}">
                                             @csrf
                                             <tr>
                                                 <td>{{ $i }}</td>
-                                                <td> {{ $cc->criminal }} <input type="hidden" name="did" value="{{$cc->id}}"> 
-                                                    
+                                                <td> {{ $cc->criminal }} <input type="hidden" name="did"
+                                                        value="{{ $cc->id }}">
+
                                                 </td>
                                                 <td> Father: {{ $cc->fname }} <br> Mother: {{ $cc->mname }}<br>
                                                     Address: {{ $cc->address }}</td>
-                                                    @php date_default_timezone_set('Asia/Dhaka');
-                                                    $currentDate = date('Y-m-d'); @endphp
-                                                    @if($case->HearingDate!=NULL)
-                                                    @foreach($case->HearingDate as $ch)
-                                                    @if(date('Y-m-d',strtotime($ch->next_date))==$currentDate)
-                                                    <input type="hidden" name="hearingDate_id" value="{{$ch->id}}">
-                                                    @endif
+                                                @php date_default_timezone_set('Asia/Dhaka');
+                                                $currentDate = date('Y-m-d'); @endphp
+                                                @if ($case->HearingDate != null)
+                                                    @foreach ($case->HearingDate as $ch)
+                                                        @if (date('Y-m-d', strtotime($ch->next_date)) == $currentDate)
+                                                            <input type="hidden" name="hearingDate_id"
+                                                                value="{{ $ch->id }}">
+                                                        @endif
                                                     @endforeach
-                                                    @endif
+                                                @endif
                                                 <td> <label for="law" class="d-block">Law
                                                         <select multiple="multiple" name="rule[]"
                                                             id="law{{ $i }}" onchange="getSection(this)"
@@ -281,13 +288,13 @@
                                                     <textarea name="shortOrder" class="form-control" id="" cols="30" rows="3"></textarea>
                                                 </td>
                                                 <td>
-                                                    <label class="mb-0 d-block"> <input type="checkbox" name="present" value='Y'
-                                                            id=""> is absent</label>
+                                                    <label class="mb-0 d-block"> <input type="checkbox" name="present"
+                                                            value='Y' id=""> is absent</label>
 
-                                                            <input type="hidden" name="case_id" value="{{$id}}">
-                                                    
+                                                    <input type="hidden" name="case_id" value="{{ $id }}">
+
                                                 </td>
-                                                
+
                                                 <td> <button class="btn btn-sm btn-info">save</button> </td>
                                             </tr>
                                         </form>
@@ -382,7 +389,8 @@
                         var option = document.createElement("option");
                         // option.value = selectedValues[i];
                         // option.text = selectedValues[i];
-                        option.value =  section[j].law_name + "Act   Penal Code-" + section[j].p_code + " Section" + section[j]
+                        option.value = section[j].law_name + "Act   Penal Code-" + section[j].p_code + " Section" +
+                            section[j]
                             .section;
                         option.text = section[j].law_name + "Act" + section[j].p_code + "  Section" + section[j]
                             .section +

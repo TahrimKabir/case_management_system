@@ -17,14 +17,18 @@ class RolePermissionSeeder extends Seeder
         //create roles
         $role = Role::create(['name' => 'admin']);
         $roleSuperAdmin = Role::create(['name' => 'superadmin']);
-        $roleEditor = Role::create(['name' => 'editor']);
+        $roleEditor = Role::create(['name' => 'court']);
+        $roleStation = Role::create(['name' => 'investigator']);
         $roleUser = Role::create(['name' => 'user']);
         // permission list as array
         $permissions = [
             // blog
-            'blog.create','blog.view','blog.approve','blog.edit','blog.delete',
+            'case-create','case-approve','case-investigate','view-today-case','view-case-profile',
             // 
-            'profile.create','profile.view','profile.approve','profile.edit','profile.delete',
+            'fix-hearing-date','view-hearing-date','edit-defendant',
+            // 
+            'view-register','view-case-type','view-setting','add-properties','sent-for-investigation','view-arrested-defendant-list',
+            'investigate-case',
         // 
         'role.create','role.view','role.approve','role.edit','role.delete'];
             
@@ -34,7 +38,7 @@ class RolePermissionSeeder extends Seeder
         for($i=0;$i<count($permissions);$i++){
             $permission = Permission::create(['name' => $permissions[$i]]);
             $roleSuperAdmin->givePermissionTo($permission);
-$permission->assignRole($roleSuperAdmin);
+            $permission->assignRole($roleSuperAdmin);
         }
 
     }

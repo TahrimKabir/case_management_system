@@ -12,7 +12,7 @@ class InvestigationController extends Controller
         if(Auth::user()->userInfo->court_id != NULL){
             $case = CaseR::where('court_id',1)->where('under_investigation','Y')->get();
             return view('caseForInvestigation',compact('case'));
-        }
+        } 
    
     // $case = Investigation::all();
         

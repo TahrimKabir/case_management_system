@@ -14,6 +14,7 @@ use App\Http\Controllers\InvestigationController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CaseTodayController;
 use App\Http\Controllers\CaseTypeController;
+use App\Http\Controllers\Auth\OTPVerificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,10 +33,17 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+// Route::get('otp/verify', 'Auth\OTPVerificationController@showVerifyForm')->name('otp.verify');
+// Route::post('otp/verify', 'Auth\OTPVerificationController@verify')->name('otp.verify.verify');
+Route::get('otp/verify', [OTPVerificationController::class,'showVerifyForm'])->name('otp.verify');
+Route::post('otp/verify', [OTPVerificationController::class,'verify'])->name('otp.verify.verify');
 Route::group(['middleware' => ['auth']], function () { 
+    
     Route::get('/role', [RoleController::class, 'index']);
+    Route::get('/user-list', [RoleController::class, 'userList']);
     Route::post('/role-created', [RoleController::class, 'store'])->name('role'); 
+    Route::get('/user/{id}', [RoleController::class, 'editRole']);
+    Route::post('/role-added', [RoleController::class, 'addRole'])->name('add-role');
     // dasboard
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/add-case', [AddCaseController::class, 'index']);

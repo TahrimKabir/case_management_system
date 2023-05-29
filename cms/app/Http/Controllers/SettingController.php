@@ -10,11 +10,18 @@ use App\Models\IArea;
 use App\Models\Bdcourt;
 use App\Models\Court;
 use App\Models\Jurisdriction;
+// 
+use App\Mail\OTPMail;
+use Illuminate\Support\Facades\Mail;
 class SettingController extends Controller
 {
     public function index(){
+        // $user = auth()->user();
+        // $otp = mt_rand(100000, 999999);
+
+        // Mail::to($user->email)->send(new OTPMail($otp));
         
-        
+        // 
         $courtCat = courtCat::all();
         $area = Area::all();
         $bdcourt = Bdcourt::all();
