@@ -52,79 +52,7 @@
 @section('editable')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
-                <label for="afor1" class="d-block">
-                    Law:
-                    <select name="caseCat" id="afor1" class="select2 form-control" style="width:100%;"></select>
-                </label>
-            </div>
-            <div class="col-md-4">
-                <label for="afor1" class="d-block">
-                    Law Section:
-                    <select name="caseCat" id="afor2" class="select2 form-control" style="width:100%;"></select>
-                </label>
-            </div>
-            <div class="col-md-2 col-6">
-                <label for="" class="d-block mb-0" style="visibility:hidden;">hi</label>
-                <button type="button" class="btn btn-info btn-md btn-block">SEARCH</button>
-            </div>
-            <div class="col-md-2 col-6">
-                <label for="" class="d-block mb-0" style="visibility:hidden;">hi</label>
-                <button type="button" class="btn btn-info btn-md btn-block" data-toggle="modal" data-target="#myModal">Add
-                    Law</button>
-                <!-- Modal -->
-                <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog ">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header bg-dark">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Add Law</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('law') }}" class="d-flex align-items-center flex-column" method="post">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="">Law Name:
-                                                <input type="text" name="law" id=""
-                                                    class="form-control"></label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Section
-                                                <input type="number" name="section" id=""
-                                                    class="form-control"></label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="">Penal Code:
-                                                <input type="text" name="pcode" id=""
-                                                    class="form-control"></label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="">Description:
-                                                <input type="text" name="desc" id=""
-                                                    class="form-control"></label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <button type="submit" class="btn btn-sm btn-success">SAVE</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                {{-- // --}}
-            </div>
 
             <div class="col-12">
                 <div class="card">
@@ -133,55 +61,93 @@
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                
-                                <th>Section</th>
-                              
-                                <th>Deadline</th>
-                                <th>Action</th>
+
+                                    <th> Case No</th>
+
+                                    <th>Deadline</th>
+                                    
+                                    <th>Parties</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $j=1; @endphp
-                               @foreach($case as $c)
-                               @if(AUth::user()->userInfo->court_id != null)
-                               <tr>
-                                <td>{{$j}} </td>
-                                <td> <a  href="{{ asset('case/' . $c->id) }}">{{$c->case_id}}</a> </td>
-                                <td>@if($c->petitionerFilledLaw!=NULL) 
-                                    @foreach($c->petitionerFilledLaw as $cp)
-                                     {{$cp->Law->law_name}},<i>Penal code-</i> {{$cp->Law->p_code}}, Section {{$cp->Law->section}}
-                                    @endforeach
-                                     @endif
-                                    </td>
-                                <td>@if($c->investigation!=NULL)
-                                    {{$c->investigation->case_id}}
-                                    @endif</td>
-                                <td>@if($c->investigation!=NULL)
-                                    {{date('Y-m-d',strtotime($c->investigation->enddate))}}
-                                    @endif</td>
-                                
-                                <td class="text-center">@if($c->petition!=NULL) 
-                                    {{$c->petition->petitioner}}
-                                     @endif
-                                     <p class="mb-0">Vs</p>
-                                     @if($c->criminal!=NULL)
-                                     @php $i=1; @endphp
-                                     @foreach($c->criminal as $cc)
-                                     @if($i>1) , @endif
-                                     {{$cc->criminal}}
-                                     @php $i=$i+1; @endphp
-                                     @endforeach
-                                     @endif
-                                    </td>
+                                {{-- @php $j=1; @endphp
+                                @foreach ($case as $c)
+                                    @if (Auth::user()->userInfo->court_id != null )
+                                        <tr>
+                                            <td>{{ $j }} </td>
+                                            <td> <a href="{{ asset('case/' . $c->id) }}" >{{ $c->case_id }}</a> </td>
+                                            <td>
+                                                @if ($c->petitionerFilledLaw != null)
+                                                    @foreach ($c->petitionerFilledLaw as $cp)
+                                                        {{ $cp->Law->law_name }},
+                                                        <i>Penal code-</i> {{ $cp->Law->p_code }}, Section
+                                                        {{ $cp->Law->section }}
+                                                    @endforeach
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($c->investigation != null)
+                                                    {{ $c->investigation->case_id }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($c->investigation != null)
+                                                    {{ date('Y-m-d', strtotime($c->investigation->enddate)) }}
+                                                @endif
+                                            </td>
 
-                                    <td></td>
-                                     
-                               </tr>
-                               @php $j=$j+1; @endphp
-                               @else
-                               
-                               @endif
-                               @endforeach
+                                            <td class="text-center">
+                                                @if ($c->petition != null)
+                                                    {{ $c->petition->petitioner }}
+                                                @endif
+                                                <p class="mb-0">Vs</p>
+                                                @if ($c->criminal != null)
+                                                    @php $i=1; @endphp
+                                                    @foreach ($c->criminal as $cc)
+                                                        @if ($i > 1)
+                                                            ,
+                                                        @endif
+                                                        {{ $cc->criminal }}
+                                                        @php $i=$i+1; @endphp
+                                                    @endforeach
+                                                @endif
+                                            </td>
+
+                                            
+
+                                        </tr>
+                                        @php $j=$j+1; @endphp
+                                    @else
+                                    @endif
+                                @endforeach --}}
+                                @php $j=1; @endphp
+                                @foreach($case as $c)
+                                <tr>
+                                    <td>{{$j}}</td>
+                                    <td> <a href="{{ asset('case/' . $c->id) }}" >{{ $c->id }}</a> </td>
+                                    <td>@if ($c->investigation != null)
+                                        {{ date('Y-m-d', strtotime($c->investigation->enddate)) }}
+                                    @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($c->petition != null)
+                                            {{ $c->petition->petitioner }}
+                                        @endif
+                                        <p class="mb-0">Vs</p>
+                                        @if ($c->criminal != null)
+                                            @php $i=1; @endphp
+                                            @foreach ($c->criminal as $cc)
+                                                @if ($i > 1)
+                                                    ,
+                                                @endif
+                                                {{ $cc->criminal }}
+                                                @php $i=$i+1; @endphp
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                </tr>
+                                @php $j=$j+1; @endphp
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

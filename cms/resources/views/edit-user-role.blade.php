@@ -53,15 +53,36 @@
     <div class="container-fluid">
        <div class="row">
         <div class="col-md-12">
+            @php
+            
+            $role = $users->roles->first();
+            $modelHasPermission = $users->permissions->first();
+           @endphp
+    
+        
             <form action="{{route('add-role')}}" method="post">
                 @csrf
                 <input type="hidden" name="id" value="{{$id}}">
                 <select name="role" id="" class="select2 form-control" style="width:100%;">
-                    @foreach($roles as $r)
-                <option value="{{$r->id}}">{{$r->name}}</option>
+                @foreach($roles as $r)
+                <option value="{{$r->id}}" @if($role != Null)@if($r->id==$role->id) selected @endif @endif>{{$r->name}}</option>
                 @endforeach
                 </select>
                 <button class="btn btn-sm btn-info mt-1">save</button>
+            </form>
+
+
+            <form action="" method="post">
+                @csrf
+                <div class="col-12">
+                    <input type="hidden" name="model_id" value="{{$id}}">
+                    @foreach($permission as $p)
+                    <label for="" class="d-block">
+                        <input type="checkbox" name="permit[]" id=""  @if($users->can($p->name)) checked disabled @else value="{{$p->id}}" @endif>
+                        {{$p->name}}  
+                    </label>
+                    @endforeach
+                </div>
             </form>
 
         </div>

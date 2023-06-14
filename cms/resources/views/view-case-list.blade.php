@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>View Case List</h1>
+                    <h1>Cognizable Case List</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -50,29 +50,27 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                       <form action="{{route('searchcaselist')}}" method="get">
+                        {{-- @csrf --}}
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="" class="d-block">From:
-                                    <input type="date" name="" id="" class="form-control">
+                                    <input type="date" name="from" id="" class="form-control">
                                 </label>
                             </div>
                             <div class="col-md-3">
                                 <label for="" class="d-block">To:
-                                    <input type="date" name="" id="" class="form-control">
+                                    <input type="date" name="to" id="" class="form-control">
                                 </label>
                             </div>
-                            <div class="col-md-3">
-                                <label for="" class="d-block">Case Category:
-                                    <select name="" id="" class="select select2 form-control"
-                                        style="width: 100%;"></select>
-                                </label>
-                            </div>
+                            
                             <div class="col-md-3">
                                 <label for="" class="d-block text-light">Search:
                                     <button class="btn btn-block btn-dark btn-md">search</button>
                                 </label>
                             </div>
                         </div>
+                       </form>
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-bordered border-top">
@@ -87,7 +85,7 @@
                                         <th>Next Date</th>
                                         <th>For What to come</th>
                                     @endif
-                                    <th>Action</th>
+                                    {{-- <th>Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -150,7 +148,7 @@
                                                     @if ($j > 1)
                                                         ,
                                                     @endif
-                                                    {{ $ca->law->law_name }}
+                                                    {{ $ca->law->law_name }} {{ $ca->law->section }}
                                                     @php $j = $j+1; @endphp
                                                 @endforeach
                                             @endif
@@ -198,6 +196,7 @@
                                                 </form>
                                             </td>
                                         @endif
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>

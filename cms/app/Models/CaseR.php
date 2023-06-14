@@ -39,4 +39,8 @@ class CaseR extends Model
         return $this->hasOne(
             Investigation::class,'case_id','id');
     }
+
+    public function transfer(){
+        return $this->hasOne(Transfer::class,'case_id','id');
+    }
 }

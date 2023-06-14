@@ -10,9 +10,12 @@ class InvestigationController extends Controller
 {
     public function index(){
         if(Auth::user()->userInfo->court_id != NULL){
-            $case = CaseR::where('court_id',1)->where('under_investigation','Y')->get();
+            $case = CaseR::where('court_id',Auth::user()->userInfo->court->id)->where('under_investigation','Y')->get();
             return view('caseForInvestigation',compact('case'));
-        } 
+        } elseif(Auth::user()->userInfo->iarea_id != NULL){
+            $case = CaseR::where('jurisdriction_id',Auth::user()->userInfo->IArea->id)->where('under_investigation','Y')->get();
+            return view('caseForInvestigation',compact('case'));
+        }
    
     // $case = Investigation::all();
         

@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Trial Register</h1>
+                    <h1>{{$type}} Register</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -104,10 +104,10 @@
                                     <th>Date</th>
                                     <th>Case No</th>
                                     <th>Parties</th>
-                                    <th>Section</th>
+                                    {{-- <th>Section</th> --}}
                                     <th>Next Date</th>
-                                    <th>For What to come</th>
-                                    <th>Result</th>
+                                    {{-- <th>For What to come</th>
+                                    <th>Result</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,10 +146,13 @@
                                             @php $next = array(); @endphp
                                             @foreach($c->HearingDate as $ch)
                                             @php array_push($next,strtotime($ch->next_date));
-                                            $nextDate = max($next); @endphp
-                                            {{ date('Y-m-d',$nextDate)}}
+                                             @endphp
+                                            
                                             @endforeach
-                                             
+                                             @if($next!=NULL)
+                                             @php $ndate = end($next); @endphp
+                                             {{date('Y-m-d',$ndate)}}
+                                             @endif
                                             {{-- @php $ndate = max($next); @endphp --}}
                                             
                                             

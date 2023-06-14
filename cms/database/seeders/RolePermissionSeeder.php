@@ -30,7 +30,8 @@ class RolePermissionSeeder extends Seeder
             'view-register','view-case-type','view-setting','add-properties','sent-for-investigation','view-arrested-defendant-list',
             'investigate-case',
         // 
-        'role.create','role.view','role.approve','role.edit','role.delete'];
+        'role.create','role.view','role.approve','role.edit','role.delete',
+    'view-case-list','view-arrest-warent-list','view-witness-list','view-setting'];
             
         // assign permissions
         // $permission = Permission::create(['name' => 'edit articles']);

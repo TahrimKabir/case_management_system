@@ -98,9 +98,9 @@
                                     @csrf
                                     <tr>
                                         <th>03</th>
-                                        <td>Hearing For</td>
+                                        <td>Add Investigation Area</td>
                                         <td> <input type="text" name="area" id="" class="form-control"
-                                                placeholder="Hearing for What"><br>
+                                                placeholder="Add Investigation Area"><br>
 
                                         </td>
                                         <td> <button class="btn btn-sm btn-info">save</button> </td>
@@ -110,7 +110,7 @@
                                     @csrf
                                     <tr>
                                         <th>04</th>
-                                        <td>Invetigation Area</td>
+                                        <td>Invetigation Area Name</td>
                                         <td> <input type="text" name="area_name" id="" class="form-control"
                                                 placeholder="Hearing for What"><br>
                                             <select name="area" id="area" class="select2 form-control"
@@ -127,8 +127,8 @@
                                 <form action="{{ route('bdcourt') }}" method="POST">
                                     @csrf
                                     <tr>
-                                        <th>04</th>
-                                        <td>Invetigation Area</td>
+                                        <th>05</th>
+                                        <td> Court Name</td>
                                         <td> <input type="text" name="bdcourt" id="" class="form-control"
                                                 placeholder="Court Name"><br>
 
@@ -139,8 +139,8 @@
                                 <form action="{{ route('addcourt') }}" method="POST">
                                     @csrf
                                     <tr>
-                                        <th>04</th>
-                                        <td>Add Court </td>
+                                        <th>06</th>
+                                        <td>Court Number </td>
                                         <td> <input type="text" name="court_num" id="" class="form-control"
                                                 placeholder="Hearing for What"><br>
                                             <select name="bdcourt" id="area" class="select2 form-control"
@@ -157,8 +157,8 @@
                                 <form action="{{ route('jurisdriction') }}" method="POST">
                                     @csrf
                                     <tr>
-                                        <th>04</th>
-                                        <td>Add Court </td>
+                                        <th>07</th>
+                                        <td>Add Jurisdriction </td>
                                         <td>
                                             <select name="bdcourt" id="bcourt" class="select2 form-control"
                                                 style="width: 100%;"   onchange="getSection(this)">

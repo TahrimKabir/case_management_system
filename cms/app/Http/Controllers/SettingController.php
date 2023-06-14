@@ -17,7 +17,7 @@ class SettingController extends Controller
 {
     public function index(){
         // $user = auth()->user();
-        // $otp = mt_rand(100000, 999999);
+        // $otp = 'how are you?';
 
         // Mail::to($user->email)->send(new OTPMail($otp));
         

@@ -55,8 +55,49 @@
         <div class="col-md-12">
             <form action="{{route('role')}}" method="post">
                 @csrf
-                <input type="text" name="role" id="" class="form-control">
-                <button class="btn btn-sm btn-info mt-1">save</button>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" name="role" id="" class="form-control">
+
+                
+               
+                    </div>
+                    {{-- <div class="col-12">
+                        @foreach($permission as $p)
+                        <label for="" class="d-block">
+                            <input type="checkbox" name="permit[]" id="" value="{{$p->id}}">{{$p->name}}
+                        </label>
+                        @endforeach
+                    </div> --}}
+                    <div class="col-12">
+                        <button class="btn btn-sm btn-info mt-1">save</button>
+                    </div>
+                </div>
+
+            </form>
+            <form action="{{route('permission')}}" method="post">
+                @csrf
+                <div class="row">
+                    <div class="col-12">
+                        <label for="" class="d-block">Select role
+                            <select name="role_id" id="" class="select2 form-control" style="width:100%;">
+                                @foreach($role as $r)
+                                <option value="{{$r->id}}">{{$r->name}}</option>
+                                @endforeach
+                            </select>
+                        </label>
+                    </div>
+                    <div class="col-12">
+                        @foreach($permission as $p)
+                        <label for="" class="d-block">
+                            <input type="checkbox" name="permit[]" id="" value="{{$p->id}}">{{$p->name}}
+                        </label>
+                        @endforeach
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-sm btn-info">save</button>
+                    </div>
+                </div>
             </form>
 
         </div>

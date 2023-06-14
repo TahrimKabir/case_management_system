@@ -10,34 +10,13 @@ use App\Models\Petitioner;
 use App\Models\PetitionerFilledLaw;
 use App\Models\Witness;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class AddCaseController extends Controller
+class PublicController extends Controller
 {
-    public function index()
-    {
-        $law = Law::select('law_name')
-            ->distinct()
-            ->get();
-        $section = Law::all();
-        if (Auth::user()->userInfo->court_id != null) {
-            $jurisdriction = Jurisdriction::where('court_id', Auth::user()->userInfo->court->id)->get();
-            return view('add-case', compact('law', 'section', 'jurisdriction'));
-        } else {
-            $jurisdriction = Jurisdriction::where('thana_id', Auth::user()->userInfo->IArea->id)->get();
-            return view('add-case', compact('law', 'section', 'jurisdriction'));
-        }
-
+    public function index(){
+        return view('user-add-case');
     }
-
-    public function getValue(Request $req)
-    {
-        $selectedValue = $req->input('selectedValue');
-        dd($selectedValue);
-    }
-
-    public function store(Request $req)
-    {
+    public function storeCase(Request $req){
         $vname = $req->petitioner;
         $accused = $req->aname;
         $vfname = $req->vfname;
@@ -52,32 +31,28 @@ class AddCaseController extends Controller
         $amname = $req->amname;
         $a_address = $req->a_address;
         $incident = $req->incidentDesc;
-        $ctype = $req->ctype;
+        $ctype = "cr";
+        $jr_id = $req->jurisdriction;
+        $cid ="";
+        if( $req->ctype == 'cr'){
+            $ctype = "cr";
+            $f = Jurisdriction::where('id',$req->jurisdriction)->first();
+            $cid = $f->court_id;
+        }elseif($req->ctype == 'gr'){
+            $ctype = "gr";
+            $f = Jurisdriction::where('id',$req->jurisdriction)->first();
+            $cid = $f->court_id;
+        }
         $rule = $req->section;
         $caseCat = $req->caseCat;
         $caseCat = "criminal";
-        $jid = "";
-        $cid = "";
+        // $cid = $req->court_id;
+        //  $jid = Auth::user()->userInfo->IArea->id;
         $lawid = $req->section;
-        $jr_id = $req->jurisdriction;
-        $casn = "";
-        // dd(Auth::user()->userInfo->court->id);
-        if(Auth::user()->userInfo->iarea_id  != NULL){
-           $jid = Auth::user()->userInfo->IArea->id;
-           $data = array('casetype' => $ctype, 'jurisdriction_id' => $jid, 'case_cat' => $caseCat, 'law_id' => "", "jurisdriction_id" => $jr_id);
-           CaseR::create($data);
-           $casn = CaseR::where('jurisdriction_id', $jid)->orderBy('created_at', 'desc')->first();
-        }elseif(Auth::user()->userInfo->court_id != NULL){
-            $cid = Auth::user()->userInfo->court->id;
-            $data = array('casetype' => $ctype, 'court_id' => $cid, 'case_cat' => $caseCat, 'law_id' => "", "jurisdriction_id" => $jr_id);
-            CaseR::create($data);
-            $casn = CaseR::where('court_id', $cid)->orderBy('created_at', 'desc')->first();
-        }
-       
-       
-       
         
-       
+        $data = array('casetype' => $ctype, 'court_id' => $cid, 'case_cat' => $caseCat, 'law_id' => "", "jurisdriction_id" => $jr_id);
+        CaseR::create($data);
+        $casn = CaseR::where('court_id', $cid)->orderBy('created_at', 'desc')->first();
 
         $pData = array('case_id' => $casn->id, 'petitioner' => $req->petitioner, 'fname' => $vfname, 'mname' => $req->vmname, 'petitionType' => $req->pType, 'address' => $vaddress);
         Petitioner::create($pData);
@@ -116,5 +91,23 @@ class AddCaseController extends Controller
             }
         }
         return redirect()->back()->with('success', 'Complaint has been filed successfully!');
+        
+    }
+
+    public function caseList(){
+        return view('case-list');
+    }
+
+    public function searchList(Request $req){
+        $pcase = CaseR::where('casetype',$req->type)->whereDate('updated_at','>',date('Y-m-d',strtotime($req->from)))->whereDate('updated_at','<',date('Y-m-d',strtotime($req->searchListto)))->get();
+        if($req->id!=NULL){
+            $pcase = CaseR::where('id',$req->id)->get();
+        }
+        if($req->from!=NULL && $req->from!=NULL ){
+        $pcase = CaseR::whereDate('updated_at','>',date('Y-m-d',strtotime($req->from)))->whereDate('updated_at','<',date('Y-m-d',strtotime($req->searchListto)))->get();
+
+        }
+       
+        return view('case-list',compact('pcase'));
     }
 }

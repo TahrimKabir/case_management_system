@@ -52,7 +52,7 @@ Case Management System
                   <!-- small box -->
                   <div class="small-box bg-info">
                     <div class="inner">
-                      <h3>150</h3>
+                      <h3>{{$tp}}</h3>
       
                       <p> Petition Cases </p>
                     </div>
@@ -67,7 +67,7 @@ Case Management System
                   <!-- small box -->
                   <div class="small-box bg-success">
                     <div class="inner">
-                      <h3>53</h3>
+                      <h3>{{$ta}}</h3>
       
                       <p>Total cases</p>
                     </div>

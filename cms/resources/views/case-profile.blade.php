@@ -47,7 +47,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Dashboard</h1>
+                    <h1>Case Profile</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -98,6 +98,7 @@
                     </div>
 
                 </div>
+                @if(Auth::user()->can('fix-hearing-date'))
                 @if (Auth::user()->userInfo->court_id != null)
                     <div class="card">
                         <div class="card-header">
@@ -120,7 +121,7 @@
                                             </select>
                                         </label>
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
 
 
                                         <label for="order" class="d-block"> Case Order
@@ -131,7 +132,7 @@
 
                                         </label>
 
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-2">
                                         <label for="" style="visibility: hidden;"
                                             class="d-block mb-0">button</label>
@@ -143,6 +144,7 @@
                         </div>
 
                     </div>
+                @endif
                 @endif
                 {{-- investigate --}}
                 @if ($case->under_investigation != 'V')

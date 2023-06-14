@@ -32,12 +32,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>View Case List</h1>
+                    <h1>View Petition List</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">View Case List</li>
+                        <li class="breadcrumb-item active">View Petition List</li>
                     </ol>
                 </div>
             </div>
@@ -53,7 +53,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    {{-- <div class="card-header">
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="" class="d-block">From:
@@ -77,14 +77,16 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="card-body table-responsive">
                         <table class="table table-bordered border-top">
                             <thead>
                                 <th>SL</th>
                                 <th>Date</th>
-                                <th>Category</th>
+                                
+
                                 <th>Petitioner Vs Accused</th>
+                                <th> Section</th>
 
                                 <th>Approve</th>
                             </thead>
@@ -95,11 +97,11 @@
                                         {{-- <td>01</td> --}}
                                         <td>{{ $c->id }}</td>
                                         <td>{{ date('Y-m-d', strtotime($c->created_at)) }}</td>
-                                        <td>
+                                        {{-- <td>
                                             @if (!is_null($c->petition))
                                                 {{ $c->petition->petitionType }}
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td class="text-center">
                                             @if (!is_null($c->petition))
                                                 {{ $c->petition->petitioner }}
@@ -137,37 +139,41 @@
                                         </td>
 
 
-                                        <td class="d-flex justify-content-center align-items-center"> 
-                                            @if($c->under_investigation=='N' ||$c->under_investigation=='V' )
-                                            <a href=""
-                                                onclick="openModal('{{ $c->id }}','{{ $c->created_at }}')"
-                                                class="btn-sm btn-info" type="button" data-toggle="modal"
-                                                data-target="#myModal">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path
-                                                        d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                </svg> Approve
-                                            </a>
-                                           @if($c->under_investigation!='V')
-                                            <a href=""
-                                                onclick="openInvestigation('{{ $c->id }}','{{ $c->created_at }}')"
-                                                class="btn-sm btn-info ml-1"   type="button" data-toggle="modal"
-                                                data-target="#investigation">
-                                               
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path
-                                                        d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                                                </svg>  investigation
-                                            </a>
-                                            @endif
+                                        <td class=" ">
+                                            @if ($c->under_investigation == 'N' || $c->under_investigation == 'V')
+                                                <a href=""
+                                                    onclick="openModal('{{ $c->id }}','{{ $c->created_at }}')"
+                                                    class="btn-sm btn-info" type="button" data-toggle="modal"
+                                                    data-target="#myModal">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path
+                                                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                    </svg> Take Cognigence 
+                                                </a>
+
+                                                <a href="" class="btn btn-sm btn-danger ml-1" readonly>Dismiss</a>
+                                                @if ($c->under_investigation != 'V')
+                                                    <a href=""
+                                                        onclick="openInvestigation('{{ $c->id }}','{{ $c->created_at }}')"
+                                                        class="btn-sm btn-info ml-1" type="button" data-toggle="modal"
+                                                        data-target="#investigation">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                            height="16" fill="currentColor" class="bi bi-check-circle"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                            <path
+                                                                d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                        </svg> Order for Inquiry/Investigation
+                                                    </a>
+                                                @endif
                                             @else
-                                            <a href="" class="btn btn-sm btn-danger ml-1" readonly>sent for investigation</a>
+                                                <a href="" class="btn btn-sm btn-danger ml-1" readonly>sent for
+                                                    Investigation</a>
                                             @endif
 
 
@@ -180,7 +186,7 @@
                                                         <div class="modal-header bg-dark">
                                                             <button type="button" class="close"
                                                                 data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Add Law</h4>
+                                                            <h4 class="modal-title">Approve Case</h4>
                                                         </div>
                                                         <div class="modal-body">
                                                             <form action="{{ route('approveCase') }}"
@@ -204,18 +210,21 @@
                                                                 <div class="row">
 
 
-                                                                    
+
                                                                     <div class="col-md-12">
                                                                         <label for="section" class="d-block">
                                                                             Section under which the case has been filed:
-                                                                            <select  name="section[]"
-                                                                                class="duallistbox" multiple="multiple"
-                                                                                style="width:100%;">
-                                                                                @foreach($section as $s)
-                                                                                <option value="{{$s->id}}">{{$s->law_name}},Section-{{$s->section}},Penal Code - {{$s->p_code}}[{{$s->desc}}] </option>
+                                                                            <select name="section[]" class="duallistbox"
+                                                                                multiple="multiple" style="width:100%;">
+                                                                                @foreach ($section as $s)
+                                                                                    <option value="{{ $s->id }}">
+                                                                                        {{ $s->law_name }},Section-{{ $s->section }},Penal
+                                                                                        Code -
+                                                                                        {{ $s->p_code }}[{{ $s->desc }}]
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
-                                                                           
+
 
 
                                                                         </label>
@@ -249,23 +258,23 @@
                                                         <div class="modal-header bg-dark">
                                                             <button type="button" class="close"
                                                                 data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Add Law</h4>
+                                                            <h4 class="modal-title">Send for Investigation</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('investigate') }}"
-                                                                
-                                                                method="post">
+                                                            <form action="{{ route('investigate') }}" method="post">
                                                                 @csrf
                                                                 <div class="row" style="display:none;">
                                                                     <div class="col-md-6">
                                                                         <label for="" class="d-block">Law Name:
                                                                             <input type="text" name="caseregid"
-                                                                                id="inputId" class="form-control"></label>
+                                                                                id="inputId"
+                                                                                class="form-control"></label>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label for="" class="d-block">Section
                                                                             <input type="number" name="section"
-                                                                                id="pcode" class="form-control"></label>
+                                                                                id="pcode"
+                                                                                class="form-control"></label>
                                                                     </div>
 
 
@@ -273,27 +282,29 @@
                                                                 <div class="row">
 
 
-                                                                    
+
                                                                     <div class="col-md-6">
                                                                         <label for="section" class="d-block">
                                                                             Section under which the case has been filed:
-                                                                            <select  name="sentto"
+                                                                            <select name="sentto"
                                                                                 class="select2 form-control"
                                                                                 style="width:100%;">
-                                                                                @foreach($iareas as $i)
-                                                                                <option value="{{$i->id}}">{{$i->area_name}}</option>
+                                                                                @foreach ($iareas as $i)
+                                                                                    <option value="{{ $i->id }}">
+                                                                                        {{ $i->area_name }}</option>
                                                                                 @endforeach
                                                                             </select>
-                                                                           
+
 
 
                                                                         </label>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label for="section" class="d-block">
-                                                                           Date to get finished
-                                                                            <input type="date" name="enddate" id="" class="form-control">
-                                                                           
+                                                                            Date to get finished
+                                                                            <input type="date" name="enddate"
+                                                                                id="" class="form-control">
+
 
 
                                                                         </label>
@@ -318,6 +329,101 @@
                                             </div>
                                             {{-- // --}}
 
+                                        </td>
+                                        <td>
+                                            <a href=""
+                                                        onclick="transfer('{{ $c->id }}','{{ $c->created_at }}')"
+                                                        class="btn-sm btn-info ml-1" type="button" data-toggle="modal"
+                                                        data-target="#transfer">
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                            height="16" fill="currentColor" class="bi bi-check-circle"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                            <path
+                                                                d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+                                                        </svg> Transfer
+                                                    </a>
+
+                                                    <div id="transfer" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog ">
+        
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-dark">
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal">&times;</button>
+                                                                    <h4 class="modal-title">Send for Investigation</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ route('transfer') }}" method="post">
+                                                                        @csrf
+                                                                        <div class="row" style="display:none;">
+                                                                            <div class="col-md-6">
+                                                                                <label for="" class="d-block">Law Name:
+                                                                                    <input type="text" name="caseregid"
+                                                                                        id="inputId"
+                                                                                        class="form-control"></label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label for="" class="d-block">Section
+                                                                                    <input type="number" name="section"
+                                                                                        id="pcode"
+                                                                                        class="form-control"></label>
+                                                                            </div>
+        
+        
+                                                                        </div>
+                                                                        <div class="row">
+        
+        
+        
+                                                                            <div class="col-md-6">
+                                                                                <label for="section" class="d-block">
+                                                                                    Section under which the case has been filed:
+                                                                                    <select name="sentto"
+                                                                                        class="select2 form-control"
+                                                                                        style="width:100%;">
+                                                                                        @foreach ($court as $i)
+                                                                                            <option value="{{ $i->id }}">
+                                                                                                {{ $i->court_name }}-{{$i->Court_number}}</option>
+                                                                                        @endforeach
+                                                                                    </select>
+        
+        
+        
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <label for="section" class="d-block">
+                                                                                    Date to get finished
+                                                                                    <input type="date" name="enddate"
+                                                                                        id="" class="form-control">
+        
+        
+        
+                                                                                </label>
+                                                                            </div>
+        
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <button type="submit"
+                                                                                    class="btn btn-sm btn-success">SAVE</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+        
+                                                        </div>
+                                                    </div>
+                                                    {{-- // --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -363,17 +469,21 @@
         // Open the modal or perform other operations
         $('#myModal').modal('show');
 
-        
+
     }
 
-    function openInvestigation(itemId,date){
+    function openInvestigation(itemId, date) {
         $('#investigation').find('#inputId').val(itemId);
         $('#investigation').find('#pcode').val(date);
         // Open the modal or perform other operations
         $('#investigation').modal('show');
     }
+
+    function transfer(itemId, date) {
+        $('#transfer').find('#inputId').val(itemId);
+        $('#transfer').find('#pcode').val(date);
+        // Open the modal or perform other operations
+        $('#transfer').modal('show');
+    }
 </script>
-
-
-
 @endsection

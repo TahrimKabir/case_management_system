@@ -1,65 +1,56 @@
-@extends('index')
-@section('title')
-    Case Management System
+@extends('front')
+
+
+{{-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="scss/front.css">
+
+</head> --}}
+
+
+@section('main')
+
+    @parent
+@section('top-nav')
+    @parent
+@endsection
+@section('body')
+    @parent
+@section('side-bar')
+    @parent
+@endsection
+@section('content')
+    @parent
+    {{-- in future, i wanna transfer login design here --}}
 @endsection
 
-
-{{-- add style before --}}
-
-@section('wrapper-main')
-    @parent
-    <!-- Navbar -->
-@section('nav-bar')
-    @parent
 @endsection
-<!-- /.navbar -->
-
-<!-- Main Sidebar Container -->
-@section('main-side-bar')
-    @parent
-@endsection
-
-<!-- Content Wrapper. Contains page content -->
-@section('content-wrapper')
-    @parent
-    <!-- Content Header (Page header) -->
-@section('content-header')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Dashboard</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-@endsection
-
-<!-- Main content -->
-@section('content-main')
-    @parent
-@section('editable')
-    <div class="container-fluid">
+@section('edit')
+<div class="myrow">
+    <div class="mycol-8">
         <div class="row">
             <div class="col-12 ">
                 <div class="card card-success">
-                    
+
                     <div class="card-header bg-dark">
                         <h3 class="text-center mb-0 font-weight-bold"> New Case (Initial)</h3>
                     </div>
-                    
+
                     <div class="card-body">
-                        <form action="{{ route('case.store') }}" method="post">
+                        <form action="{{ route('casestored') }}" method="post">
                             @csrf
                             <div class="row my-4" id="p1">
                                 <div class="col-12 bg-dark p-1 ">
-                                    <h4 class="text-center mb-0">Complainant Details</h4>
+                                    <h4 class="text-center mb-0">Petitioner Details</h4>
                                 </div>
                             </div>
                             <div class="row " id="p2">
@@ -185,20 +176,21 @@
                                     <label for="law" class="d-block">
                                         Act under which the case is filed:
                                         <select multiple="multiple" name="rule" id="law"
-                                            onchange="getSection(this)" class="select2 form-control" style="width:100%;">
+                                            onchange="getSection(this)" class="select2 form-control"
+                                            style="width:100%;">
 
                                             @foreach ($law as $l)
-                                                <option data-state="{{ $l->law_name }}" value="{{ $l->law_name }}">
-                                                    {{ $l->law_name }} {{ $l->section }}</option>
-                                            @endforeach
+                                                        <option data-state="{{ $l->law_name }}" value="{{ $l->law_name }}">
+                                                            {{ $l->law_name }} {{ $l->section }}</option>
+                                                    @endforeach
                                         </select>
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="section" class="d-block">
                                         Section under which the case has been filed:
-                                        <select id="targetDropdown" name="section[]" class="select2" multiple="multiple"
-                                            style="width:100%;">
+                                        <select id="targetDropdown" name="section[]" class="select2"
+                                            multiple="multiple" style="width:100%;">
 
                                         </select>
 
@@ -225,34 +217,20 @@
                                         Case Type:
                                         <select name="ctype" id="ctype" onchange="myFunction()"
                                             class="select2 form-control" style="width:100%;">
-                                            @if(Auth::user()->userInfo->court_id != NULL)
-                                            <option value="cr">cr</option>
-                                            @endif
-                                            @if(Auth::user()->userInfo->iarea_id != NULL)
-                                            <option value="gr">gr</option>
-                                            
-                                            <option value="nongr">non-gr</option>
-                                            @endif
+                                            <option value="cr">Court</option>
+                                            <option value="gr">Police Station</option>
                                         </select>
                                     </label>
                                 </div>
-                                <div class="col-md-4">
+                                
 
-                                    <p id="distance" class="mb-0"></p>
-
-                                </div>
-                                <div class="col-md-4">
-
-                                    <p id="date" class="mb-0"></p>
-
-                                </div>
 
                                 <div class="col-md-4" id="jurisdriction">
 
                                     <label for="jurisdriction" class="d-block">jurisdriction
                                         <select name="jurisdriction" id="" class="select2 form-control">
-                                            @foreach($jurisdriction as $jd)
-                                            <option value="{{$jd->id}}">@if($jd->IArea!=NULL) {{$jd->IArea->area_name}}@endif </option>
+                                            @foreach ($jrd as $jd)
+                                                    <option value="{{$jd->id}}">@if ($jd->IArea != null) {{$jd->IArea->area_name}}@endif </option>
                                             @endforeach
                                         </select>
                                     </label>
@@ -278,28 +256,15 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
-@endsection
-<!-- /.content -->
-
-@endsection
-<!-- /.content-wrapper -->
 @section('footer')
 @parent
 @endsection
 
-<!-- Control Sidebar -->
-@section('control-sidebar')
-@parent
 @endsection
-
-@endsection
-
 @section('script')
 @parent
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.js"></script> --}}
-
-{{-- add/remove form --}}
 <script>
     $(document).ready(function() {
         var max_fields = 100; //maximum input boxes allowed
@@ -348,37 +313,6 @@
         })
     });
 </script>
-{{-- // --}}
-<script>
-    function myFunction() {
-        var x = document.getElementById("ctype").value;
-        console.log(x);
-        if (x == 'gr') {
-            document.getElementById("p1").style.display = 'none';
-            document.getElementById("p2").style.display = 'none';
-            document.getElementById("distance").innerHTML =
-                "<label class='d-block' for='dist'>Distance:<input type='text' class='form-control' name='dist'></label>";
-            document.getElementById("date").innerHTML =
-                "<label class='d-block' for='dist'>Distance:<input type='date' class='form-control' name='dist'></label>";
-        } else {
-            // document.getElementById("distance").innerHTML = "";
-            // document.getElementById("date").innerHTML = "";
-        }
-
-
-    }
-</script>
-<script>
-    var $law = $('#law'),
-        $section = $('#section'),
-        $options = $section.find('option');
-
-    $law.on('change', function() {
-        $section.html($options.filter('[data-state="' + this.value + '"]'));
-    }).trigger('change');
-</script>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-
 {{-- dependent dropdown --}}
 <script>
     function getSection(select) {
@@ -415,6 +349,25 @@
                 }
             }
         }
+    }
+</script>
+{{-- add type --}}
+<script>
+    function myFunction() {
+        var x = document.getElementById("ctype").value;
+        console.log(x);
+        if (x == 'c') {
+            // document.getElementById("p1").style.display = 'none';
+            // document.getElementById("p2").style.display = 'none';
+
+            
+                "<label class='d-block' for='dist'>Distance:<input type='date' class='form-control' name='dist'></label>";
+        } else {
+            // document.getElementById("distance").innerHTML = "";
+            // document.getElementById("date").innerHTML = "";
+        }
+
+
     }
 </script>
 @endsection

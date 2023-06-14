@@ -65,13 +65,15 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @if(Auth::user()->can('case-create'))
                         <li class="nav-item">
-
+                            
                             <a class="nav-link" href="{{ asset('/add-case') }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Case Register</p>
                             </a>
                         </li>
+                        @endif
                         <li class="nav-item">
 
                             <a class="nav-link" href="{{ asset('/view-case-list') }}">
@@ -83,7 +85,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ asset('/approve-case') }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>approve-case</p>
+                                <p>Take Cognigence</p>
                             </a>
                         </li>
 
@@ -170,7 +172,7 @@
 
                     </ul>
                 </li>
-
+                @if(Auth::user()->can('view-setting'))
                 <li class="nav-item  @if (Request::segment(1) == 'add-case' || Request::segment(1) == 'view-case-list') menu-open @endif">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -199,10 +201,34 @@
                                     <p>Laws</p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+
+                                <a class="nav-link" href="{{ asset('registration/') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Registration</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+
+                                <a class="nav-link" href="{{ asset('user-list/') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>User-list</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+
+                                <a class="nav-link" href="{{ asset('role/') }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Add New Role</p>
+                                </a>
+                            </li>
                         
 
                     </ul>
                 </li>
+                @endif
 
                 <li class="nav-item  @if (Request::segment(1) == 'add-case' || Request::segment(1) == 'view-case-list') menu-open @endif">
                     <a href="#" class="nav-link">
